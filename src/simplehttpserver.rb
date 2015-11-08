@@ -10,7 +10,7 @@ require 'haml/filters'
 require 'haml_patch.rb'
 require "kramdown"
 
-require 'serve'
+require 'serve_ext'
 require 'serve/application'
 require 'sass/plugin/rack'
 class SimpleHTTPServer
@@ -31,7 +31,7 @@ class SimpleHTTPServer
       :MimeTypes => mime_types
     }.merge(options)
 
-    stop 
+    stop
 
     app = Rack::Builder.new do
 
@@ -55,20 +55,20 @@ class SimpleHTTPServer
                               Serve::RackAdapter.new( views_dir ),
                               Rack::Directory.new( public_dir),
                               Serve::RackAdapter.new( views_dir, true ) # for custom 404 page
-        ]) 
-      else 
+        ])
+      else
         run Rack::Cascade.new([
                               Serve::RackAdapter.new( dir ),
                               Rack::Directory.new( dir ),
                               Serve::RackAdapter.new( dir, true )
-        ]) 
+        ])
 
       end
     end
 
     @webrick_server = Rack::Handler.get('webrick')
 
-    @http_server_thread = Thread.new do 
+    @http_server_thread = Thread.new do
       @webrick_server.run app, :Port => options[:Port], :Host => "0.0.0.0" do |server|
         trap("INT") { server.shutdown }
       end

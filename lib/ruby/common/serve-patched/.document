@@ -1,6 +1,0 @@
-README.rdoc
-CHANGELOG.rdoc
-lib/**/*.rb
-bin/*
-features/**/*.feature
-LICENSE

@@ -120,7 +120,7 @@ module Tilt
 
     # Whether or not this template engine allows executing Ruby script
     # within the template. If this is false, +scope+ and +locals+ will
-    # generally not be used, nor will the provided block be avaiable 
+    # generally not be used, nor will the provided block be avaiable
     # via +yield+.
     # This should be overridden by template subclasses.
     def allows_script?
@@ -167,6 +167,8 @@ module Tilt
     # override render() may not support all features.
     def evaluate(scope, locals, &block)
       method = compiled_method(locals.keys)
+      puts scope.inspect
+      puts block.inspect
       method.bind(scope).call(locals, &block)
     end
 
@@ -247,7 +249,7 @@ module Tilt
       method_source = ""
 
       if method_source.respond_to?(:force_encoding)
-        method_source.force_encoding(source.encoding) 
+        method_source.force_encoding(source.encoding)
       end
 
       method_source << <<-RUBY
