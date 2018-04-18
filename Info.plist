@@ -13,7 +13,7 @@
     <key>CFBundleIconFile</key>
     <string>icon-osx.icns</string>
     <key>CFBundleIdentifier</key>
-    <string>com.kkbox.fireapp</string>
+    <string>org.monkeybars.rawr.Main</string>
     <key>CFBundleDisplayName</key>
     <string>Fire.app</string>
     <key>CFBundleInfoDictionaryVersion</key>
@@ -36,9 +36,9 @@
     <string>com.kkbox.fireapp.Main</string>
     <key>JVMOptions</key>
     <array>
-      <string>-Dapple.laf.useScreenMenuBar=true</string> 
+      <string>-Dapple.laf.useScreenMenuBar=true</string>
       <string>-Dfile.encoding=UTF-8</string>
-      <string>-XstartOnFirstThread</string> 
+      <string>-XstartOnFirstThread</string>
       <string>-Xss1m</string>
       <string>-XX:-UseParallelOldGC</string>
       <string>-XX:NewRatio=4</string>
@@ -49,4 +49,4 @@
     <array>
     </array>
   </dict>
-</plist> 
+</plist>
