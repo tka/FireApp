@@ -1,10 +1,10 @@
 SWT_LIB_PATH ="#{LIB_PATH}/swt"
 
-if org.jruby.platform.Platform::IS_MAC  
+if org.jruby.platform.Platform::IS_MAC
   os="osx"
-elsif org.jruby.platform.Platform::IS_LINUX 
+elsif org.jruby.platform.Platform::IS_LINUX
   os="linux"
-elsif org.jruby.platform.Platform::IS_WINDOWS 
+elsif org.jruby.platform.Platform::IS_WINDOWS
   os="win"
 end
 
@@ -16,12 +16,13 @@ end
 
 # for Ubuntu Unity, because they hard code the white list
 # http://bazaar.launchpad.net/~unity-team/unity/trunk/view/head:/panel/PanelTray.cpp#L33
-if org.jruby.platform.Platform::IS_LINUX
-  SWT_APP_NAME = "JavaEmbeddedFrame"  # for Ubuntu Unity 
-else
-  SWT_APP_NAME = "Fire.app" 
-end
+#if org.jruby.platform.Platform::IS_LINUX
+#  SWT_APP_NAME = "JavaEmbeddedFrame"  # for Ubuntu Unity
+#else
+  SWT_APP_NAME = "Fire.app"
+#end
 
+puts "#{SWT_LIB_PATH}/swt_#{os}#{arch}"
 require "#{SWT_LIB_PATH}/swt_#{os}#{arch}"
 
 module Swt

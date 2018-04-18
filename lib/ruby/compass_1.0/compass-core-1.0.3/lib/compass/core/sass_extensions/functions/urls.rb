@@ -2,7 +2,7 @@ module Compass::Core::SassExtensions::Functions::Urls
 
 
   def self.has?(base, instance_method)
-    Sass::Util.has?(:instance_method, base, instance_method)
+    base.send("instance_methods").include?(instance_method.to_sym)
   end
 
   def self.included(base)
@@ -274,7 +274,7 @@ module Compass::Core::SassExtensions::Functions::Urls
     else
       path = cache_buster[:path] if cache_buster[:path]
     end
-    
+
     if cache_buster[:query]
       "#{path}#{path["?"] ? "&" : "?"}#{cache_buster[:query]}"
     else

@@ -10,7 +10,9 @@ module Serve
 
       full_path = File.join(root, path)
       best_path = best_match(full_path)
-
+      puts "path", path
+      puts "full_path", full_path
+      puts "best_path", best_path
       case
       when File.file?(best_path)
         # A file exists! Return the matching path.
@@ -41,6 +43,7 @@ module Serve
 
     def self.best_match(path)
       [
+          path,
         path + ".{#{Serve::DynamicHandler.extensions.join(",")}}",
           path + ".*"
       ].each do |p|

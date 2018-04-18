@@ -9,10 +9,10 @@ end
 
 module App
   extend self
-  
+
   include CompileVersion
   VERSION = "1.14"
-  OS = org.jruby.platform.Platform::OS 
+  OS = org.jruby.platform.Platform::OS
   OS_VERSION = java.lang.System.getProperty("os.version")
 
   def version
@@ -23,7 +23,7 @@ module App
     "#{OS}.#{OS_VERSION}.#{org.jruby.platform.Platform::ARCH}.ruby-#{RUBY_VERSION}.#{COMPILE_TIME}.#{REVISION}"
   end
 
-  
+
   Dir.mkdir( CONFIG_DIR ) unless File.exists?( CONFIG_DIR )
 
   FAVORITE_FILE =  File.join( CONFIG_DIR, 'favorite')
@@ -57,16 +57,16 @@ module App
   end
 
   def get_config
-    begin 
-      x = YAML.load_file( CONFIG_FILE ) 
+    begin
+      x = YAML.load_file( CONFIG_FILE )
     rescue => e
-      x = {} 
+      x = {}
     end
 
     x.delete("services_http_port") unless x["services_http_port"].to_i > 0
     x.delete("services_livereload_port") unless x["services_livereload_port"].to_i > 0
     x.delete("num_of_history") unless x["num_of_history"].to_i > 0
-                                
+
     config={
       "show_welcome" => true,
       "use_version" => 1.0,
@@ -89,7 +89,7 @@ module App
 
     return config
   end
- 
+
   CONFIG = get_config
   def require_compass
 
@@ -107,9 +107,9 @@ module App
       # make sure use java version library, ex json-java, eventmachine-java
       jruby_gems_path = File.join(LIB_PATH, "ruby", "jruby" )
       scan_library( jruby_gems_path )
-      
-      require 'rb-fsevent' if OS == 'darwin' && App::CONFIG['force_enable_fsevent'] 
-      require 'rb-inotify' if OS == 'linux' 
+
+      require 'rb-fsevent' if OS == 'darwin' && App::CONFIG['force_enable_fsevent']
+      require 'rb-inotify' if OS == 'linux'
       require 'listen'
 
       require "compass"
@@ -119,7 +119,7 @@ module App
       if CONFIG["use_specify_gem_path"]
         alert("Load custom Compass fail, use default Compass v1.0.0 library, please check the Gem Path")
       end
- 
+
 
       common_lib_path = File.join(LIB_PATH, "ruby", "common" )
       scan_library( common_lib_path )
@@ -129,13 +129,13 @@ module App
         App::CONFIG['use_version']=1.0
         App.save_config
       end
-      
+
       compass_gems_path = File.join(LIB_PATH, "ruby", "compass_#{App::CONFIG['use_version']}")
 
       scan_library(compass_gems_path)
 
-      extensions_gems_path = File.join(LIB_PATH, "ruby", "compass_extensions" )
-      scan_library( extensions_gems_path )
+      #extensions_gems_path = File.join(LIB_PATH, "ruby", "compass_extensions" )
+      #scan_library( extensions_gems_path )
 
       require "compass"
       require "compass/exec"
@@ -157,29 +157,29 @@ module App
   def set_favorite(dirs)
     File.open(FAVORITE_FILE, 'w') do |out|
       YAML.dump(dirs, out)
-    end 
-  end 
+    end
+  end
 
   def get_favorite
     dirs = YAML.load_file( FAVORITE_FILE ) if File.exists?(FAVORITE_FILE)
     return dirs if dirs
     return []
-  end 
+  end
 
   def set_histoy(dirs)
     dirs = dirs[0, App::CONFIG["num_of_history"]]
     File.open(HISTORY_FILE, 'w') do |out|
       YAML.dump(dirs, out)
-    end 
-  end 
+    end
+  end
 
   def get_history
     dirs = YAML.load_file( HISTORY_FILE ) if File.exists?(HISTORY_FILE)
     return dirs if dirs
     return []
-  end 
+  end
 
-  def display 
+  def display
     @display ||= Swt::Widgets::Display.get_current
   end
 
@@ -195,11 +195,11 @@ module App
   def get_stdout
     begin
       sio = StringIO.new
-      old_stdout, $stdout = $stdout, sio 
+      old_stdout, $stdout = $stdout, sio
       #  Invoke method to test that writes to stdout
       yield
       output = sio.string.gsub(/\e\[\d+m/,'')
-    rescue Exception => e  	
+    rescue Exception => e
       output = e.message
     end
     $stdout = old_stdout # restore stdout
@@ -219,7 +219,7 @@ module App
   def report(msg, target_display = nil, options={}, &block)
     Report.new(msg, target_display, options, &block)
   end
-  
+
   def alert(msg, target_display = nil, &block)
     Alert.new(msg, target_display, &block)
   end
@@ -238,10 +238,10 @@ module App
       $LOAD_PATH.unshift( lib_path ) if File.exists?(lib_path)
     end
   end
-  
+
   def  shared_extensions_path
     home_dir = java.lang.System.getProperty("user.home")
-    if File.directory?(home_dir) && File.writable?( home_dir ) 
+    if File.directory?(home_dir) && File.writable?( home_dir )
       folder_path = File.join( home_dir, '.compass','extensions' )
     else
       folder_path = File.join( File.dirname( CONFIG_DIR), 'extensions')
